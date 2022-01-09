@@ -128,6 +128,17 @@ void readlineinfile(FILE* file,char* chtab){
 	char ch;
 	do{
 		ch=fgetc(file);
+		if(ch=='/'){
+			ch=fgetc(file);
+			if(ch=='/'){
+				char ch2=fgetc(file);
+				while(ch2!='\n'){ch2=fgetc(file);}
+				ch='\n';
+			}else{
+				chtab[i]='/';
+				i++;
+			}
+		}
 		if(ch!='\n'){chtab[i]=ch;}else{chtab[i]='\0';}
 		i++;
 	}while(ch!='\n');

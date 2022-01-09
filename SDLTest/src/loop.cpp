@@ -23,6 +23,7 @@ int x;
 int y;
 int tickcounter=0;
 int delay=100;
+int lvimg=0;
 static Entity* createentity(Entity enty){
 	for(int i=0;i<NBENTITY;i++){
 		if(tabentity[i].existing==false){
@@ -67,7 +68,7 @@ static void traitetextureanimated(TextureAnimated* tex){
 	if(tex->isdefaulttable){tex->texture = tabdefaulttextures[tex->actualindex];}else{tex->texture = tabtextures[tex->actualindex];}
 }
 
-static void traitecolliding(InitResult* ir,Entity* enty){
+static void traitecolliding(InitResult* ir,Entity* enty,bool keepenergy){
 	double smallest = distint(enty->pos.x,enty->pos.y,tabplanets[0].pos.x,tabplanets[0].pos.y)-sqrt((tabplanets[0].w)*(tabplanets[0].w+tabplanets[0].h*tabplanets[0].h))
 			,smallestindex = 0;
 	for(int i=1;i<NBPLANET;i++){
@@ -99,8 +100,13 @@ static void traitecolliding(InitResult* ir,Entity* enty){
 				}else{
 					enty->pos.x-=enty->velocity.x;
 					enty->pos.y-=enty->velocity.y;
-					enty->velocity.x=-(enty->velocity.x);
-					enty->velocity.y=-(enty->velocity.y);
+					if(keepenergy){
+						enty->velocity.x=-(enty->velocity.x);
+						enty->velocity.y=-(enty->velocity.y);
+					}else{
+						enty->velocity.x=0;
+						enty->velocity.y=0;
+					}
 				}
 			}
 		}
@@ -144,7 +150,7 @@ static void traiteplanet(Planet* planet,int planetindex,InitResult* ir,int mappo
 static void traitentity(Entity* enty,InitResult* ir,int mapposx,int mapposy){
 	O pos.x+=O velocity.x;
 	O pos.y+=O velocity.y;
-	traitecolliding(ir,enty);
+	traitecolliding(ir,enty,true);
 if(enty->existing){
 	traitetextureanimated(&(O texture));
 	SDL_Rect dist={(int)(((enty->pos.x) - mapposx)-(enty->w/2)),(int)(((enty->pos.y) - mapposy)-(enty->h/2)),enty->w,enty->h};
@@ -188,6 +194,24 @@ static void actionwin(InitResult* ir,Entity* enty, bool* Exit){
 			}
 		}
 	}
+}
+
+static void actionlevel(InitResult* ir,Entity* enty, bool* Exit){
+		for(int i=0;i<NBENTITY;i++){
+			if(ENTY.existing){
+				if(amiin(ENTY.pos.x,ENTY.pos.y,enty->pos.x-(enty->w/2),enty->pos.y-(enty->h/2),enty->w,enty->h)){
+					if(ENTY.player.drivenbyplayer){
+						std::string str=std::to_string((int)enty->fuel);
+						str = "lv"+str+".txt";
+						const char* ch=str.c_str();
+						char* ch2=(char*)ch;
+						loop(ir,ch2);
+						*Exit=true;
+						break;
+					}
+				}
+			}
+		}
 }
 
 static void actionplanet(Entity* enty){
@@ -246,6 +270,18 @@ static void inittabtextures(InitResult* ir){
 	}
 }
 
+static void dolvimg(InitResult* ir){
+	int xpos;
+	int imax;
+	SDL_GetWindowSize(ir->window,&xpos,&imax);
+	for(int i=-imax;i<0;i+=5){
+		SDL_Rect dist={0,i,xpos,imax};
+		SDL_RenderCopy(ir->renderer,tabtextures[lvimg],NULL,&dist);
+		SDL_RenderPresent(ir->renderer);
+		SDL_Delay(10);
+	}
+	SDL_Delay(2000);
+}
 static void updateui(InitResult* ir){
 	if(!(ui.spaceship->existing)){
 		bool o=false;
@@ -353,7 +389,7 @@ static void getevents(bool* Exit, Events* events){
 
 static void initfromfile(const char* filepath,InitResult* ir){
 FILE* file=fopen(filepath,"r");
-if(file==NULL){exit(0);};
+if(file==NULL){printf("file \"");printf(filepath);printf("\" isn't loaded!closing...");exit(0);};
 char ch=' ';
 char chtab[100];
 int nbtextures;
@@ -387,9 +423,9 @@ for (int o=0;o<nbentities;o++){
 	ta.indexmax=strtol(chtab,NULL,10);
 	readlineinfile(file,chtab);
 	type=(EntityType)strtol(chtab,NULL,10);
-	ch=fgetc(file);
+	readlineinfile(file,chtab);
+	ch=chtab[0];
 	if(ch=='0'){pl.drivenbyplayer=false;}else{pl.drivenbyplayer=true;}
-	fgetc(file);
 	readlineinfile(file,chtab);
 	pl.force=strtol(chtab,NULL,10);
 	if(pl.drivenbyplayer){
@@ -442,9 +478,9 @@ for (int o=0;o<nbplanets;o++){
 	maxspeedbeforeexplosion=strtol(chtab,NULL,10);
 	readlineinfile(file,chtab);
 	mass=strtol(chtab,NULL,10);
-	ch=fgetc(file);
+	readlineinfile(file,chtab);
+	ch=chtab[0];
 	if(ch=='0'){fixed=false;}else{fixed=true;}
-	fgetc(file);
 	readlineinfile(file,chtab);
 	Entity* enty=createplanet({ta,pos,SDL_LoadBMP(chtab),(int)dim[ta.actualindex*2],(int)dim[ta.actualindex*2+1],mass,maxspeedbeforeexplosion,fixed,true}); // @suppress("Invalid arguments")
 	if(!fixed){
@@ -457,11 +493,12 @@ for (int o=0;o<nbplanets;o++){
 printf("planets loaded");
 readlineinfile(file,chtab);
 int index=strtol(chtab,NULL,10);
-printf("%d",index);
 ui.spaceship=&(tabentity[index]);
-ch=fgetc(file);
+readlineinfile(file,chtab);
+ch=chtab[0];
 if(ch=='0'){leveltype=STAYINARENALEVEL;}else{leveltype=CAPTURETHEWINLEVEL;}
-fgetc(file);
+readlineinfile(file,chtab);
+lvimg=strtol(chtab,NULL,10);
 arenaw=dim[0];
 arenah=dim[1];
 }
@@ -493,6 +530,10 @@ static void tick(InitResult* ir,Events e,int w, int h,bool* Exit){
 }
 
 void loop(InitResult* ir){
+	loop(ir,"map.txt");
+}
+
+void loop(InitResult* ir, char* file){
 	for(int i=0;i<NBENTITY;i++){
 		tabentity[i]=*(new Entity);
 	}
@@ -506,9 +547,10 @@ void loop(InitResult* ir){
 		tabexplosion[i]=*(new Explosion);
 	}
 	ui=*(new Ui);
-initfromfile("lv1.txt",ir);
+initfromfile(file,ir);
 inittabtextures(ir);
 SDL_SetWindowFullscreen(ir->window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+dolvimg(ir);
 bool Exit=false;
 died=false;
 win=false;
@@ -539,6 +581,9 @@ while(!Exit){
 			if(ENTY.type==WIN){
 				actionwin(ir,&ENTY,&Exit);
 			}
+			if(ENTY.type==LEVEL){
+				actionlevel(ir,&ENTY,&Exit);
+			}
 			if(ENTY.type==PLANET){
 				actionplanet(&ENTY);
 			}
@@ -560,6 +605,8 @@ while(!Exit){
 	SDL_RenderPresent(ir->renderer);
 	tick(ir,e,arenaw,arenah,&Exit);
 }
+died=false;
+win=false;
 SDL_SetWindowFullscreen(ir->window, 0);
 }
 

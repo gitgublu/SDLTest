@@ -8,6 +8,7 @@ enum EntityType{
 	PLANET,
 	SPACESHIPWAITINGLIFTOFF,
 	WIN,
+	LEVEL,
 };
 typedef struct TextureAnimated{
 	int indexmin;
@@ -88,4 +89,5 @@ typedef struct Explosion{
 	bool existing=false;
 }Explosion;
 void loop(InitResult* ir);
+void loop(InitResult* ir,char* file);
 #endif

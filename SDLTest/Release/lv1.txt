@@ -1,61 +1,106 @@
-6
-2
-2
-map.bmp
-space_ship.bmp
-space_ship-1.bmp
-space_ship-off.bmp
+9//nb textures
+3//nb planets
+4//nb entities
+map.bmp//textures...
+man.bmp
+man-1.bmp
+man-off.bmp
+man-off-1.bmp
 planet.bmp
 win.bmp
-3
-3
+lv1img.bmp
+Terre.bmp
+3//first entity{ texture animated{ from
+3//actual
+4//to}
+0//type [0=OTHER,1=PLANET,2=SPACESHIPWAITINGLIFTOFF,3=WIN,4=LEVEL]
+1//player{ driven by player? [0=n,1=y]
+10//force (next informations (textures on and off) are not required if drivenbyplayer=0)
+1//texture animated on{ from
+1//actual
+2//to}
+3//texture animated off{ from
+3//actual
+4//to}}
+100//angle
+0//pos{x
+900//y}
+0//velocity{x
+0//y}
+100//fuel level}
+3//second entity{ texture animated{ from
+3//actual
+3//to}
+0//type [0=OTHER,1=PLANET,2=SPACESHIPWAITINGLIFTOFF,3=WIN,4=LEVEL]
+1//player{ driven by player? [0=n,1=y]
+1//force (next informations (textures on and off) are not required if drivenbyplayer=0)
+1//texture animated on{ from
+1//actual
+2//to}
+3//texture animated off{ from
+3//actual
+3//to}
+0//angle
+100//pos{x
+100//y}
+0//velocity{x
+0//y}
+100//fuel}
+6
+6
+6
 3
 0
 1
-1
-1
-1
+0
+1000
+0
+0
+0
+100
+4
+4
+4
 2
-3
-3
-3
-45
+0
+1
+0
+100
+0
+0
+0
+100
+8
+8
+8
+640
+1000
+1000
+600
+1
+Terre.bmp
+5
+5
+5
 500
-1200
+500
 0
-0
-100
-5
-5
-5
-3
-0
-1
-0
-0
-0
-0
-0
-100
-4
-4
-4
-1000
-1000
-1000
-950
-1
-planet.bmp
-4
-4
-4
-1000
-1200
-1000
-100
+600
 0
 planet.bmp
-4
+0
+0
+5
+5
+5
+1000
+1000
+0
+200
+0
+planet.bmp
 0
 0
 0
+1
+7

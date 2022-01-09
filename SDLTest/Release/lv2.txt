@@ -1,4 +1,4 @@
-6
+7
 3
 4
 map.bmp
@@ -7,6 +7,7 @@ space_ship-1.bmp
 space_ship-off.bmp
 planet.bmp
 win.bmp
+lv1img.bmp
 3
 3
 3
@@ -100,3 +101,4 @@ planet.bmp
 0
 0
 1
+6
