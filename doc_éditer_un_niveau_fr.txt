@@ -1,0 +1,41 @@
+nombre de textures
+nombre de planettes
+nompbre d'entités
+textures(ex: texture1.bmp
+                  texture2.bmp
+                  texture3.bmp)
+entités: 1èreentité: texture annimée: index de la 1ère texture(ex: 0 pour texture1.bmp, 1 pour texture2.bmp...)
+                                                        index de la texture actuelle
+                                                        index de la dernière texture
+                             type d'entitée (0 pour autre, 1 pour une planette, 2 pour une fusée avant décollage, 3 pour un trophé, 4 pour une icone de niveau, 4 pour un boulet lazer, 5 pour un OVNI agressif)
+                             conduit par le joueur? (0 pour non, 1pour oui)
+                             incrément lors d'un mouvement du joueur
+                             ! les champs entre crochets ne sont à remplire que dans le cas d'un objet conduit par le joueur ou d'une fusée avant décollage!{texture annimée en mode on: index de la 1ère texture}
+                                                                                                                                                                                                                                                                               {index de la texture actuelle}
+                                                                                                                                                                                                                                                                               {index de la dernière texture}
+                             {texture annimée en mode off: index de la 1ère texture}
+                                                                             {index de la texture actuelle}
+                                                                             {index de la dernière texture}
+                             angle initial
+                             position initialle: position x
+                                                       position y
+                             vitesse initialle: vitesse x
+                                                     vitesse y
+                             niveau de carburant
+         autres entités:
+planettes: 1ère planette: texture annimée: index de la 1ère texture
+                                                                 index de la texture actuelle
+                                                                 index de la dernière texture
+                                      position initialle: position x
+                                                                position y
+                                      vitesse limite des entités. toute entité l'ayant dépassée et entrant en collision avec la planette explosera
+                                      masse
+                                      fixé dans l'espace ou en mouvement?(0 pour non fixé, 1 pour fixé)
+                                      texture de collision(un pixel transparent=pas de collision, pixel coloré=collision)
+                                      ! les champs entre crochets ne doivent être remplis qu'à condition que la planette ne soit pas fixée dans l'espace! {vitesse initialle: vitesse x}
+                                                                                                                                                                                                                                             {vitesse y}
+index de l'objet(entité) à suivre avec la camera
+type de niveau (0 pour un niveau où il faut se trouver au bout d'un certain temps dans l'arène, 1 pour un niveau dont le but est d'atrapper une entité qui fait office de trophé
+l'index de l'image de présentation du niveau
+l'index de l'image de fin du niveau 
+!ne pas oublier ce saut de ligne final!
