@@ -7,7 +7,6 @@ textures(ex: texture1.bmp
 entités: 1èreentité: texture annimée: index de la 1ère texture(ex: 0 pour texture1.bmp, 1 pour texture2.bmp...)
                                                         index de la texture actuelle
                                                         index de la dernière texture
-                             type d'entitée (0 pour autre, 1 pour une planette, 2 pour une fusée avant décollage, 3 pour un trophé, 4 pour une icone de niveau, 4 pour un boulet lazer, 5 pour un OVNI agressif)
                              conduit par le joueur? (0 pour non, 1pour oui)
                              incrément lors d'un mouvement du joueur
                              ! les champs entre crochets ne sont à remplire que dans le cas d'un objet conduit par le joueur ou d'une fusée avant décollage!{texture annimée en mode on: index de la 1ère texture}
